@@ -1,0 +1,35 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
+}
+
+group 'com.github.ivpal'
+version '0.0.1'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    implementation "io.vertx:vertx-core:4.0.3"
+    implementation "io.vertx:vertx-ignite:4.0.3"
+    implementation "io.vertx:vertx-web:4.0.3"
+    implementation "io.vertx:vertx-config:4.0.3"
+
+    implementation "ch.qos.logback:logback-classic:1.2.3"
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.1")
+    testImplementation("io.vertx:vertx-junit5:4.0.3")
+    testImplementation("io.rest-assured:rest-assured:4.3.3")
+    testImplementation("org.assertj:assertj-core:3.19.0")
+
+    testImplementation("org.testcontainers:junit-jupiter:1.15.2")
+
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.1")
+}
+
+test {
+    useJUnitPlatform()
+}
