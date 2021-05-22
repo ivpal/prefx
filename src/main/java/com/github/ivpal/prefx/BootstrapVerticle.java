@@ -23,7 +23,7 @@ public class BootstrapVerticle extends AbstractVerticle {
     public void start(Promise<Void> startPromise) {
         var repository = new IgniteCompletionRepository(ignite, vertx);
         ignite.<String, LinkedHashMap<String, Long>>createCache(CACHE_NAME);
-        vertx.deployVerticle(new SeverVerticle(repository))
+        vertx.deployVerticle(new ServerVerticle(repository))
             .onSuccess(result -> {
                 logger.info("Started");
                 startPromise.complete();

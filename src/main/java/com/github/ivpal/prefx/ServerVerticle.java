@@ -12,14 +12,14 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SeverVerticle extends AbstractVerticle {
+public class ServerVerticle extends AbstractVerticle {
     private final int MAX_PREFIX_LENGTH = 30;
     private final int MAX_COMPLETION_LENGTH = 60;
-    private final Logger logger = LoggerFactory.getLogger(SeverVerticle.class);
+    private final Logger logger = LoggerFactory.getLogger(ServerVerticle.class);
 
     private final CompletionRepository completionRepository;
 
-    public SeverVerticle(CompletionRepository completionRepository) {
+    public ServerVerticle(CompletionRepository completionRepository) {
         this.completionRepository = completionRepository;
     }
 
