@@ -1,0 +1,7 @@
+version: '3'
+
+services:
+  app:
+    image: 'ivpal/prefx:0.0.1'
+    ports:
+      - 8000:8000

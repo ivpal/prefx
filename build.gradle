@@ -1,6 +1,19 @@
+buildscript {
+    ext {
+        assertjVersion = "3.19.0"
+        jacksonVersion = "2.12.0"
+        junitVersion = "5.7.1"
+        logbackVersion = "1.2.3"
+        restAssuredVersion = "4.3.3"
+        testcontainersVersion = "1.15.2"
+        vertxVersion = "4.0.3"
+    }
+}
+
 plugins {
     id 'java'
     id 'com.github.johnrengelman.shadow' version '6.1.0'
+    id 'com.google.cloud.tools.jib' version '2.8.0'
 }
 
 group 'com.github.ivpal'
@@ -9,28 +22,42 @@ version '0.0.1'
 repositories {
     mavenLocal()
     mavenCentral()
-    jcenter()
 }
 
 dependencies {
-    implementation "io.vertx:vertx-core:4.0.3"
-    implementation "io.vertx:vertx-ignite:4.0.3"
-    implementation "io.vertx:vertx-web:4.0.3"
-    implementation "io.vertx:vertx-config:4.0.3"
+    implementation "io.vertx:vertx-core:${vertxVersion}"
+    implementation "io.vertx:vertx-ignite:${vertxVersion}"
+    implementation "io.vertx:vertx-web:${vertxVersion}"
+    implementation "io.vertx:vertx-config:${vertxVersion}"
 
-    implementation "ch.qos.logback:logback-classic:1.2.3"
-    implementation "com.fasterxml.jackson.core:jackson-databind:2.12.0"
+    implementation "ch.qos.logback:logback-classic:${logbackVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.1")
-    testImplementation("io.vertx:vertx-junit5:4.0.3")
-    testImplementation("io.rest-assured:rest-assured:4.3.3")
-    testImplementation("org.assertj:assertj-core:3.19.0")
-
-    testImplementation("org.testcontainers:junit-jupiter:1.15.2")
-
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
+    testImplementation("io.vertx:vertx-junit5:${vertxVersion}")
+    testImplementation("io.rest-assured:rest-assured:${restAssuredVersion}")
+    testImplementation("org.assertj:assertj-core:${assertjVersion}")
+    testImplementation("org.testcontainers:junit-jupiter:${testcontainersVersion}")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }
 
 test {
     useJUnitPlatform()
 }
+
+jib {
+    from {
+        image = "adoptopenjdk/openjdk11:ubi-minimal-jre"
+    }
+    to {
+        image = "ivpal/prefx"
+        tags = ['0.0.1', 'latest']
+    }
+    container {
+        mainClass = 'com.github.ivpal.prefx.Application'
+        ports = ['8000']
+    }
+    allowInsecureRegistries = true
+}
+
+tasks.shadowJar.dependsOn tasks.jibDockerBuild
